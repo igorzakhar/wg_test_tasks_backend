@@ -3,6 +3,12 @@ import psycopg2
 
 DSN = 'dbname=wg_forge_db user=wg_forge password=42a host=localhost port=5432'
 
+DEC2FLOAT = psycopg2.extensions.new_type(
+    psycopg2.extensions.DECIMAL.values,
+    'DEC2FLOAT',
+    lambda value, curs: float(value) if value is not None else None)
+psycopg2.extensions.register_type(DEC2FLOAT)
+
 
 def get_mean_median_mode(cursor, column_name):
     query = '''
